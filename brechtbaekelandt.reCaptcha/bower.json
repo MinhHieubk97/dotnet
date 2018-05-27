@@ -1,5 +1,5 @@
 {
-  "name": "asp.net",
+  "name": "reCaptcha",
   "private": true,
   "dependencies": {
     "jquery": "^3.3.1",
