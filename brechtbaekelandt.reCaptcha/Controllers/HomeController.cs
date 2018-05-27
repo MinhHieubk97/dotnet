@@ -21,7 +21,6 @@ namespace brechtbaekelandt.reCaptcha.Controllers
         }
 
         [HttpPost]
-        [Route("post")]
         [ValidateReCaptcha(secretKey: _secretKey)]
         [ValidateAntiForgeryToken]
         public IActionResult Post([Bind(Prefix = "PostPerson")]Person model)
@@ -35,11 +34,11 @@ namespace brechtbaekelandt.reCaptcha.Controllers
                 this.ViewData["PostErrorMessage"] = $"You must complete all the fields and ReCaptcha correctly.";
             }
             
-            return this.View("Index", new HomeViewModel{ PostPerson = model});
+            return this.RedirectToAction("Index");
         }
 
         [HttpPost]
-        [Route("ajaxpost")]
+        [Route("home/ajaxpost")]
         [ValidateReCaptcha(secretKey: _secretKey)]
         public IActionResult AjaxPost([FromBody]Person model)
         {
