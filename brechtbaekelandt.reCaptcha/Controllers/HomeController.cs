@@ -34,7 +34,7 @@ namespace brechtbaekelandt.reCaptcha.Controllers
                 this.ViewData["PostErrorMessage"] = $"You must complete all the fields and ReCaptcha correctly.";
             }
             
-            return this.RedirectToAction("Index");
+            return this.View("Index");
         }
 
         [HttpPost]
