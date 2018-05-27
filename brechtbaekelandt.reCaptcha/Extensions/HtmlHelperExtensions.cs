@@ -93,6 +93,7 @@ namespace brechtbaekelandt.reCaptcha.Extensions
                     elementId: ""{elementId}"",
                     widgetId: null,
                     event: ""{@event}"",
+                    eventObject: null,
                     useCookie: {useCookie.ToString().ToLower()},
                     isInitialized: false,                        
                     data: {{}},
@@ -131,6 +132,8 @@ namespace brechtbaekelandt.reCaptcha.Extensions
                         var self = this;
 
                         return (ev) => {{
+                            self.eventObject =ev;
+
                             ev.preventDefault();
                             ev.stopImmediatePropagation();
 
@@ -196,7 +199,7 @@ namespace brechtbaekelandt.reCaptcha.Extensions
                                 case ""click"": element.click(); break;
                                 case ""focus"": element.focus(); break;
                                 case ""blur"": element.blur(); break;
-                                default: element.dispatchEvent(new CustomEvent(self.event));
+                                default: element.dispatchEvent(self.eventObject);
                             }}
 
                             // reset the id's after the event trigger
