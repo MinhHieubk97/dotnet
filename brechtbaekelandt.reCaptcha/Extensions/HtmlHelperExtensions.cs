@@ -139,8 +139,8 @@ namespace brechtbaekelandt.reCaptcha.Extensions
 
                             // prevent the change to occur till after ReCaptcha check by setting the values to the original values and/or the selectedIndexes (<select>) to the original index                           
                             self.data.newValue = ev.target.value;
-                            ev.target.value = self.data.originalValue;
                             self.data.newIndex = ev.target.selectedIndex;
+                            ev.target.value = self.data.originalValue;                           
                             ev.target.selectedIndex = self.data.originalIndex;
 
                             if(ev.target.nodeType === ""SELECT"") {{    
@@ -168,10 +168,10 @@ namespace brechtbaekelandt.reCaptcha.Extensions
                                 // set cookie
                                 var date = new Date();
 
-                                // set the period in which the cookie will expire (10 seconds);
-                                date.setTime(date.getTime() + 10000);
+                                // set the period in which the cookie will expire (30 seconds);
+                                date.setTime(date.getTime() + 30000);
 
-                                document.cookie = ""g-recaptcha-response="" + response + ""; expires=""; + date.toUTCString() + ""; path=/"";
+                                document.cookie = ""g-recaptcha-response="" + response + ""; expires="" + date.toUTCString() + ""; path=/"";
                             }}
 
                             var element = document.getElementById(self.elementId + ""_Original"");
