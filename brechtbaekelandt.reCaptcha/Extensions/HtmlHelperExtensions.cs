@@ -52,7 +52,7 @@ namespace brechtbaekelandt.reCaptcha.Extensions
                     
                     captchaConfigs: [],
 
-                    initializeCaptchas: function() {{
+                    initializeReCaptchas: function() {{
                         this.captchaConfigs.forEach(config => {{ config.initialize() }})
                        
                         this.isInitialized = true;
@@ -72,6 +72,14 @@ namespace brechtbaekelandt.reCaptcha.Extensions
                         }});
 
                         return config ? config.containerId : null;
+                    }},
+
+                    getReCaptchaConfigForElement: function(elementId) {{
+                         var config = this.captchaConfigs.find(function(config) {{
+                            return config.elementId === elementId;
+                        }});
+
+                        return config;
                     }},
 
                     executeReCaptchaForElement: function(elementId) {{
@@ -228,7 +236,7 @@ namespace brechtbaekelandt.reCaptcha.Extensions
 
                     function reCaptchaApiLoaded() {{
                         window.brechtbaekelandt.reCaptcha.isReCaptchaApiScriptLoaded = true; 
-                        window.brechtbaekelandt.reCaptcha.initializeCaptchas();
+                        window.brechtbaekelandt.reCaptcha.initializeReCaptchas();
                     }}
                 }};                                
                 </script>";
