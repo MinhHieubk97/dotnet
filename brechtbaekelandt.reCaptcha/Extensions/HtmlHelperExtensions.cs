@@ -17,10 +17,10 @@ namespace brechtbaekelandt.reCaptcha.Extensions
         {
             @event = @event ??  "click";
 
-            return new HtmlString(BuildCaptchaForElementHtml(publicKey, elementId, @event, beforeReCaptcha, useCookie));
+            return new HtmlString(BuildReCaptchaForElementHtml(publicKey, elementId, @event, beforeReCaptcha, useCookie));
         }
 
-        private static string BuildCaptchaForElementHtml(string publicKey, string elementId, string @event, string beforeCheck, bool useCookie)
+        private static string BuildReCaptchaForElementHtml(string publicKey, string elementId, string @event, string beforeCheck, bool useCookie)
         {
             var builder = new StringBuilder();
 
