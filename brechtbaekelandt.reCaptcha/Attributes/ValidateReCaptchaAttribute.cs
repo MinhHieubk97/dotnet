@@ -22,12 +22,18 @@ namespace brechtbaekelandt.reCaptcha.Attributes
 
         public override void OnActionExecuting(ActionExecutingContext context)
         {
-            var captchaResponse = context.HttpContext.Request.HasFormContentType && context.HttpContext.Request.Form[this._recaptchaResponseKey].Any() ? context.HttpContext.Request.Form[this._recaptchaResponseKey].First() : context.HttpContext.Request.Headers[this._recaptchaResponseKey].Any() ? context.HttpContext.Request.Headers[this._recaptchaResponseKey].ToString() : context.HttpContext.Request.Cookies[this._recaptchaResponseKey] != null && context.HttpContext.Request.Cookies[this._recaptchaResponseKey].Any() ? context.HttpContext.Request.Cookies[this._recaptchaResponseKey] : string.Empty;
-          
+            var captchaResponse =
+                context.HttpContext.Request.HasFormContentType && context.HttpContext.Request.Form[this._recaptchaResponseKey].Any() ?
+                context.HttpContext.Request.Form[this._recaptchaResponseKey].First() :
+                context.HttpContext.Request.Headers[this._recaptchaResponseKey].Any() ?
+                context.HttpContext.Request.Headers[this._recaptchaResponseKey].ToString() :
+                context.HttpContext.Request.Cookies[this._recaptchaResponseKey] != null && context.HttpContext.Request.Cookies[this._recaptchaResponseKey].Any() ?
+                context.HttpContext.Request.Cookies[this._recaptchaResponseKey] :
+                string.Empty;
+
             if (string.IsNullOrEmpty(captchaResponse))
             {
                 context.ModelState.AddModelError("ReCaptchaResponseNotPresent", this._reCaptchaResponseNotPresentValidationMessage);
-
                 return;
             }
 
