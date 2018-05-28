@@ -105,7 +105,7 @@ namespace brechtbaekelandt.reCaptcha.Extensions
                             var element = document.getElementById(self.elementId);                                    
                             var elementClone = element.cloneNode(true);
                             
-                            elementClone[""on"" + self.event] = self.eventHandler;
+                            elementClone[""on"" + (self.event != ""enter"" ? self.event : ""keyup"")] = self.eventHandler;
 
                             // get the original value and selectedIndex (for <select>)                         
                             elementClone.onfocus = () => {{
@@ -125,7 +125,7 @@ namespace brechtbaekelandt.reCaptcha.Extensions
                     }},
 
                     get before() {{
-                        return {(string.IsNullOrEmpty(beforeCheck) ? "null" : "window." + beforeCheck)};
+                        return {(string.IsNullOrEmpty(beforeCheck) ? "null" : beforeCheck)};
                     }},
 
                     get eventHandler() {{
@@ -134,21 +134,24 @@ namespace brechtbaekelandt.reCaptcha.Extensions
                         return (ev) => {{
                             self.eventObject =ev;
 
+                            if(self.event === ""enter"") {{
+                                if(self.eventObject.keyCode !== 13) {{
+                                    return;
+                                }}
+                            }}
+
                             ev.preventDefault();
                             ev.stopImmediatePropagation();
 
                             // clear the cookie on the document
                             document.cookie = ""g-recaptcha-response=; expires=Thu, 01 Jan 1970 00:00:01 GMT; path=/"";
 
-                            // prevent the change to occur till after ReCaptcha check by setting the values to the original values and/or the selectedIndexes (<select>) to the original index                           
-                            self.data.newValue = ev.target.value;
-                            self.data.newIndex = ev.target.selectedIndex;
-                            ev.target.value = self.data.originalValue;                           
-                            ev.target.selectedIndex = self.data.originalIndex;
+                            self.data.newValue = ev.target.value;                           
 
-                            if(ev.target.nodeType === ""SELECT"") {{    
-                                ev.target.options.forEach((option) => option.selected = false);
-
+                            if(ev.target.nodeName === ""SELECT"") {{  
+                                // prevent the change to occur till after ReCaptcha check by setting the values to the original values and/or the selectedIndexes (<select>) to the original index                           
+                                self.data.newIndex = ev.target.selectedIndex;                                                          
+                                ev.target.selectedIndex = self.data.originalIndex;
                                 ev.target.options[ev.target.selectedIndex].selected = true;
                             }}
 
@@ -184,14 +187,14 @@ namespace brechtbaekelandt.reCaptcha.Extensions
                             element.id = self.elementId;
                             clonedElement.id = self.elementId + ""_Cloned"";
 
-                            // set the value to the new value and/or the selectedIndex (<select>) to the new index
+                            // set the value to the new value
                             clonedElement.value = self.data.newValue;
                             element.value = self.data.newValue;
-                            clonedElement.selectedIndex = self.data.newIndex;
-                            element.selectedIndex = self.data.newIndex;
 
-                            if(clonedElement.nodeType === ""SELECT"" && element.nodeType === ""SELECT"") {{
-                                element.options.forEach((option) => option.selected = false);
+                            if(clonedElement.nodeName === ""SELECT"" && element.nodeName === ""SELECT"") {{     
+                                // set the selected index to the new index
+                                clonedElement.selectedIndex = self.data.newIndex;
+                                element.selectedIndex = self.data.newIndex;
                                 element.options[element.selectedIndex].selected = true;
                             }}                                                               
 
@@ -227,8 +230,7 @@ namespace brechtbaekelandt.reCaptcha.Extensions
                         window.brechtbaekelandt.reCaptcha.isReCaptchaApiScriptLoaded = true; 
                         window.brechtbaekelandt.reCaptcha.initializeCaptchas();
                     }}
-                }};                
-                
+                }};                                
                 </script>";
 
             return script;
