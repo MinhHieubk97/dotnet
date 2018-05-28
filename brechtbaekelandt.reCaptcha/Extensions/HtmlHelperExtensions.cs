@@ -31,7 +31,6 @@ namespace brechtbaekelandt.reCaptcha.Extensions
             builder.Append(BuildReCaptchaScript(elementId, containerId, @event, beforeCheck, useCookie));
             builder.Append("");
 
-
             return builder.ToString();
         }
 
@@ -156,9 +155,9 @@ namespace brechtbaekelandt.reCaptcha.Extensions
 
                             self.data.newValue = ev.target.value;                           
 
-                            if(ev.target.nodeName === ""SELECT"") {{  
-                                // prevent the change to occur till after ReCaptcha check by setting the values to the original values and/or the selectedIndexes (<select>) to the original index                           
-                                self.data.newIndex = ev.target.selectedIndex;                                                          
+                            if(ev.target.nodeName === ""SELECT"") {{                                  
+                                self.data.newIndex = ev.target.selectedIndex;  
+                                ev.target.value = self.data.originalValue;
                                 ev.target.selectedIndex = self.data.originalIndex;
                                 ev.target.options[ev.target.selectedIndex].selected = true;
                             }}
