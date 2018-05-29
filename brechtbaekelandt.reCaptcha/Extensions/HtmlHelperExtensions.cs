@@ -49,28 +49,28 @@ namespace brechtbaekelandt.reCaptcha.Extensions
                     isReCaptchaApiScriptLoaded: false,
                     isInitialized: false,                    
                     
-                    captchaConfigs: [],
+                    reCaptchaConfigs: [],
 
                     initializeReCaptchas: function() {{
                         // This works in MS Edge and google Chrome
-                        //this.captchaConfigs.forEach(config => {{ config.initialize() }})
+                        //this.reCaptchaConfigs.forEach(config => {{ config.initialize() }})
 
                         // This works in MS Edge and google Chrome and MS IE11
-                        this.captchaConfigs.forEach(function(config) {{ config.initialize() }})
+                        this.reCaptchaConfigs.forEach(function(config) {{ config.initialize() }})
                        
                         this.isInitialized = true;
                     }},
                 
                     getReCaptchaWidgetIdForElement: function(elementId) {{
                         // This works in MS Edge and google Chrome
-                        //var config = this.captchaConfigs.find((c) => {{
+                        //var config = this.reCaptchaConfigs.find((c) => {{
                         //    return c.elementId === elementId;
                         //}});
 
                         // This works in MS Edge and google Chrome and MS IE11
                         var config;
 
-                        this.captchaConfigs.forEach(function(c) {{
+                        this.reCaptchaConfigs.forEach(function(c) {{
                             if(c.elementId === elementId) {{
                                 config = c;
                                 return;
@@ -82,14 +82,14 @@ namespace brechtbaekelandt.reCaptcha.Extensions
 
                     getReCaptchaContainerIdForElement: function(elementId) {{
                         // This works in MS Edge and google Chrome
-                        //var config = this.captchaConfigs.find((c) => {{
+                        //var config = this.reCaptchaConfigs.find((c) => {{
                         //    return c.elementId === elementId;
                         //}});
 
                         // This works in MS Edge and google Chrome and MS IE11
                         var config;
 
-                        this.captchaConfigs.forEach(function(c) {{
+                        this.reCaptchaConfigs.forEach(function(c) {{
                             if(c.elementId === elementId) {{
                                 config = c;
                                 return;
@@ -101,14 +101,14 @@ namespace brechtbaekelandt.reCaptcha.Extensions
 
                     getReCaptchaConfigForElement: function(elementId) {{
                         // This works in MS Edge and google Chrome
-                        //var config = this.captchaConfigs.find((config) => {{
+                        //var config = this.reCaptchaConfigs.find((config) => {{
                         //    return config.elementId === elementId;
                         //}});
 
                         // This works in MS Edge and google Chrome and MS IE11
                         var config;
 
-                        this.captchaConfigs.forEach(function(c) {{
+                        this.reCaptchaConfigs.forEach(function(c) {{
                             if(c.elementId === elementId) {{
                                 config = c;
                                 return;
@@ -131,7 +131,7 @@ namespace brechtbaekelandt.reCaptcha.Extensions
                     }}
                 }}
                 
-                window.brechtbaekelandt.reCaptcha.captchaConfigs.push(
+                window.brechtbaekelandt.reCaptcha.reCaptchaConfigs.push(
                 {{
                     containerId: ""{containerId}"",
                     elementId: ""{elementId}"",
@@ -303,14 +303,14 @@ namespace brechtbaekelandt.reCaptcha.Extensions
                 if (!window.brechtbaekelandt.reCaptcha.isReCaptchaApiScriptAlreadyInPage) {{
                     window.brechtbaekelandt.reCaptcha.isReCaptchaApiScriptAlreadyInPage = true;
 
-                    var captchaScript = document.createElement('script');
-                    captchaScript.type = 'text/javascript';
-                    captchaScript.async = true;
-                    captchaScript.defer = true;
-                    captchaScript.src = 'https://www.google.com/recaptcha/api.js?onload=reCaptchaApiLoaded&render=explicit';
+                    var reCaptchaScript = document.createElement('script');
+                    reCaptchaScript.type = 'text/javascript';
+                    reCaptchaScript.async = true;
+                    reCaptchaScript.defer = true;
+                    reCaptchaScript.src = 'https://www.google.com/recaptcha/api.js?onload=reCaptchaApiLoaded&render=explicit';
 
                     var head = document.getElementsByTagName('head')[0];
-                    head.appendChild(captchaScript)
+                    head.appendChild(reCaptchaScript)
 
                     function reCaptchaApiLoaded() {{
                         window.brechtbaekelandt.reCaptcha.isReCaptchaApiScriptLoaded = true; 
