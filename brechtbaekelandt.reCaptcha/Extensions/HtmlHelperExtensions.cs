@@ -52,30 +52,67 @@ namespace brechtbaekelandt.reCaptcha.Extensions
                     captchaConfigs: [],
 
                     initializeReCaptchas: function() {{
-                        this.captchaConfigs.forEach(config => {{ config.initialize() }})
+                        // This works in MS Edge and google Chrome
+                        //this.captchaConfigs.forEach(config => {{ config.initialize() }})
+
+                        // This works in MS Edge and google Chrome and MS IE
+                        this.captchaConfigs.forEach(function(config) {{ config.initialize() }})
                        
                         this.isInitialized = true;
                     }},
                 
                     getReCaptchaWidgetIdForElement: function(elementId) {{
-                        var config = this.captchaConfigs.find(function(config) {{
-                            return config.elementId === elementId;
+                        // This works in MS Edge and google Chrome
+                        //var config = this.captchaConfigs.find((c) => {{
+                        //    return c.elementId === elementId;
+                        //}});
+
+                        // This works in MS Edge and google Chrome and MS IE
+                        var config;
+
+                        this.captchaConfigs.forEach(function(c) {{
+                            if(c.elementId === elementId) {{
+                                config = c;
+                                return;
+                            }}
                         }});
 
                         return config ? config.widgetId : null;
                     }},
 
                     getReCaptchaContainerIdForElement: function(elementId) {{
-                         var config = this.captchaConfigs.find(function(config) {{
-                            return config.elementId === elementId;
+                        // This works in MS Edge and google Chrome
+                        //var config = this.captchaConfigs.find((c) => {{
+                        //    return c.elementId === elementId;
+                        //}});
+
+                        // This works in MS Edge and google Chrome and MS IE
+                        var config;
+
+                        this.captchaConfigs.forEach(function(c) {{
+                            if(c.elementId === elementId) {{
+                                config = c;
+                                return;
+                            }}
                         }});
 
                         return config ? config.containerId : null;
                     }},
 
                     getReCaptchaConfigForElement: function(elementId) {{
-                         var config = this.captchaConfigs.find(function(config) {{
-                            return config.elementId === elementId;
+                        // This works in MS Edge and google Chrome
+                        //var config = this.captchaConfigs.find((config) => {{
+                        //    return config.elementId === elementId;
+                        //}});
+
+                        // This works in MS Edge and google Chrome and MS IE
+                        var config;
+
+                        this.captchaConfigs.forEach(function(c) {{
+                            if(c.elementId === elementId) {{
+                                config = c;
+                                return;
+                            }}
                         }});
 
                         return config;
@@ -104,21 +141,37 @@ namespace brechtbaekelandt.reCaptcha.Extensions
                     useCookie: {useCookie.ToString().ToLower()},
                     isInitialized: false,                        
                     data: {{}},
+
+                    get before() {{
+                        return {(string.IsNullOrEmpty(beforeCheck) ? "null" : beforeCheck)};
+                    }},
                    
                     get initialize() {{
                         var self = this;
 
-                        return () => {{
+                        // This works in MS Edge and google Chrome
+                        //return () => {{
+
+                        // This works in MS Edge and google Chrome and MS IE
+                        return function() {{
                             var element = document.getElementById(self.elementId);                                    
                             var elementClone = element.cloneNode(true);
-                            
+                                                            
                             elementClone[""on"" + (self.event != ""enter"" ? self.event : ""keyup"")] = self.eventHandler;
 
+                            // This works in MS Edge and google Chrome
                             // get the original value and selectedIndex (for <select>)                         
-                            elementClone.onfocus = () => {{
+                            //elementClone.onfocus = () => {{
+                            //    self.data.originalValue = elementClone.value;
+                            //    self.data.originalIndex = elementClone.selectedIndex                                    
+                            //}}
+
+                            // This works in MS Edge and google Chrome and MS IE
+                            // get the original value and selectedIndex (for <select>)  
+                            elementClone.onfocus = function() {{
                                 self.data.originalValue = elementClone.value;
-                                self.data.originalIndex = elementClone.selectedIndex                                    
-                            }}
+                                self.data.originalIndex = elementClone.selectedIndex  
+                            }}                                
                             
                             element.id += ""_Original"";                               
                             element.style.display = ""none"";
@@ -129,17 +182,18 @@ namespace brechtbaekelandt.reCaptcha.Extensions
 
                             self.isInitialized = true;                                
                         }}
-                    }},
-
-                    get before() {{
-                        return {(string.IsNullOrEmpty(beforeCheck) ? "null" : beforeCheck)};
-                    }},
+                    }},                        
 
                     get eventHandler() {{
                         var self = this;
 
-                        return (ev) => {{
-                            self.eventObject =ev;
+                        // This works in MS Edge and google Chrome
+                        //return (ev) => {{
+
+                        // This works in MS Edge and google Chrome and MS IE
+                        return function(ev) {{
+
+                            self.eventObject = ev;
 
                             if(self.event === ""enter"") {{
                                 if(self.eventObject.keyCode !== 13) {{
@@ -153,10 +207,11 @@ namespace brechtbaekelandt.reCaptcha.Extensions
                             // clear the cookie on the document
                             document.cookie = ""g-recaptcha-response=; expires=Thu, 01 Jan 1970 00:00:01 GMT; path=/"";
 
-                            self.data.newValue = ev.target.value;                           
+                            self.data.newValue = ev.target.value;                                  
 
-                            if(ev.target.nodeName === ""SELECT"") {{                                  
-                                self.data.newIndex = ev.target.selectedIndex;  
+                            if(ev.target.nodeName === ""SELECT"") {{   
+                                // prevent the change to occur till after ReCaptcha check by setting the values to the original values the selectedIndexes to the original index                           
+                                self.data.newIndex = ev.target.selectedIndex;
                                 ev.target.value = self.data.originalValue;
                                 ev.target.selectedIndex = self.data.originalIndex;
                                 ev.target.options[ev.target.selectedIndex].selected = true;
@@ -175,7 +230,11 @@ namespace brechtbaekelandt.reCaptcha.Extensions
                     get callback() {{
                         var self = this;
 
-                        return (response) => {{
+                        // This works in MS Edge and google Chrome
+                        //return (response) => {{
+
+                        // This works in MS Edge and google Chrome and MS IE
+                        return function(response) {{
 
                             if(self.useCookie) {{
                                 // set cookie
@@ -193,13 +252,13 @@ namespace brechtbaekelandt.reCaptcha.Extensions
                             // set the id's to the original values so when triggering the even the event.target id is correct
                             element.id = self.elementId;
                             clonedElement.id = self.elementId + ""_Cloned"";
-
+                           
                             // set the value to the new value
                             clonedElement.value = self.data.newValue;
                             element.value = self.data.newValue;
-
-                            if(clonedElement.nodeName === ""SELECT"" && element.nodeName === ""SELECT"") {{     
-                                // set the selected index to the new index
+                            
+                            if(clonedElement.nodeName === ""SELECT"" && element.nodeName === ""SELECT"") {{  
+                                // set the selected index to the new index                                   
                                 clonedElement.selectedIndex = self.data.newIndex;
                                 element.selectedIndex = self.data.newIndex;
                                 element.options[element.selectedIndex].selected = true;
@@ -208,8 +267,28 @@ namespace brechtbaekelandt.reCaptcha.Extensions
                             switch (self.event) {{
                                 case ""click"": element.click(); break;
                                 case ""focus"": element.focus(); break;
-                                case ""blur"": element.blur(); break;
-                                default: element.dispatchEvent(self.eventObject);
+                                case ""blur"": element.blur(); break;  
+
+                                // This works in MS Edge and google Chrome
+                                // default: element.dispatchEvent(self.eventObject); break;
+        
+                                // This works in MS Edge and google Chrome and MS IE
+                                default: {{                                        
+                                    var event;
+
+                                    if(typeof(Event) === ""function"") {{
+                                        event = self.eventObject;
+                                    }} else {{ 
+                                        event = document.createEvent(""Event"");
+                                        event.initEvent(self.event === ""enter"" ? ""keyup"" : self.event, true, true);
+                                        if(self.event === ""enter"") {{ 
+                                            event.keyCode = 13;
+                                            event.which = 13;
+                                        }}
+                                    }} 
+
+                                    element.dispatchEvent(event);   
+                                }}; break;
                             }}
 
                             // reset the id's after the event trigger
