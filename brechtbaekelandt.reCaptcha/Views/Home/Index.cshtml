@@ -100,7 +100,7 @@
         <a href="#" id="clearPersonAjaxLink" class="btn btn-secondary" style="min-width: 150px;">clear</a>
     </div>
 
-    @this.Html.InvisibleReCaptchaFor(_siteKey, "addPersonAjaxLink", null, "validateAjaxForm")
+    @this.Html.InvisibleReCaptchaFor(_siteKey, "addPersonAjaxLink", null, "(elementId) => { return $('#' + elementId).closest('form').valid(); }", true)
 </form>
 
 <script type="text/javascript">
@@ -182,23 +182,21 @@
         <i>*note: the value will not change untill after the ReCaptcha is completed.</i>
     </div>
 
-    @this.Html.InvisibleReCaptchaFor(_siteKey, "addPersonAjaxSelect", "change", "submitAjaxForm2AreYouSure", true)
+    @this.Html.InvisibleReCaptchaFor(_siteKey, "addPersonAjaxSelect", "change", "() => confirm('Are you sure you want to change the person?')", true)
 </form>
 
 <script type="text/javascript">
     $("#addPersonAjaxSelect").change((ev) => { submitAjaxForm2(ev); });
-
-    function submitAjaxForm2AreYouSure() {
-        return window.confirm("Are you sure you want to change the person?");
-    }
-
+    
     function submitAjaxForm2(ev) {
-        var ignore = $("#addPersonAjaxSelect").find(":selected").data("ignore");
+        var $elementId = "#" + ev.target.id;
+
+        var ignore = $($elementId).find(":selected").data("ignore");
 
         if (!ignore) {
-            var ajaxPersonFirstName = $("#addPersonAjaxSelect").find(":selected").data("first-name");
-            var ajaxPersonLastName = $("#addPersonAjaxSelect").find(":selected").data("last-name");
-            var ajaxPersonEmailAddress = $("#addPersonAjaxSelect").find(":selected").data("email-address");
+            var ajaxPersonFirstName = $($elementId).find(":selected").data("first-name");
+            var ajaxPersonLastName = $($elementId).find(":selected").data("last-name");
+            var ajaxPersonEmailAddress = $($elementId).find(":selected").data("email-address");
 
             var ajaxPerson = {
                 firstName: ajaxPersonFirstName,

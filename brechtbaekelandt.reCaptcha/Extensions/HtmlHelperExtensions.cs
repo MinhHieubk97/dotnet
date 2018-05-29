@@ -17,10 +17,10 @@ namespace brechtbaekelandt.reCaptcha.Extensions
         {
             @event = @event ??  "click";
 
-            return new HtmlString(BuildCaptchaForElementHtml(publicKey, elementId, @event, beforeReCaptcha, useCookie));
+            return new HtmlString(BuildReCaptchaForElementHtml(publicKey, elementId, @event, beforeReCaptcha, useCookie));
         }
 
-        private static string BuildCaptchaForElementHtml(string publicKey, string elementId, string @event, string beforeCheck, bool useCookie)
+        private static string BuildReCaptchaForElementHtml(string publicKey, string elementId, string @event, string beforeReCaptcha, bool useCookie)
         {
             var builder = new StringBuilder();
 
@@ -28,9 +28,8 @@ namespace brechtbaekelandt.reCaptcha.Extensions
 
             builder.Append(BuildReCaptchaContainerHtml(publicKey, containerId));
             builder.Append("");
-            builder.Append(BuildReCaptchaScript(elementId, containerId, @event, beforeCheck, useCookie));
+            builder.Append(BuildReCaptchaScript(elementId, containerId, @event, beforeReCaptcha, useCookie));
             builder.Append("");
-
 
             return builder.ToString();
         }
@@ -40,7 +39,7 @@ namespace brechtbaekelandt.reCaptcha.Extensions
             return $"<div class=\"g-recaptcha\" id=\"{containerId}\" data-sitekey=\"{publicKey}\" data-size=\"invisible\"></div>";
         }
 
-        private static string BuildReCaptchaScript(string elementId, Guid containerId, string @event, string beforeCheck, bool useCookie)
+        private static string BuildReCaptchaScript(string elementId, Guid containerId, string @event, string beforeReCaptcha, bool useCookie)
         {
             var script =
                 $@"<script type=""text/javascript"">
@@ -50,28 +49,73 @@ namespace brechtbaekelandt.reCaptcha.Extensions
                     isReCaptchaApiScriptLoaded: false,
                     isInitialized: false,                    
                     
-                    captchaConfigs: [],
+                    reCaptchaConfigs: [],
 
-                    initializeCaptchas: function() {{
-                        this.captchaConfigs.forEach(config => {{ config.initialize() }})
+                    initializeReCaptchas: function() {{
+                        // This works in MS Edge and google Chrome
+                        //this.reCaptchaConfigs.forEach(config => {{ config.initialize() }})
+
+                        // This works in MS Edge and google Chrome and MS IE11
+                        this.reCaptchaConfigs.forEach(function(config) {{ config.initialize() }})
                        
                         this.isInitialized = true;
                     }},
                 
                     getReCaptchaWidgetIdForElement: function(elementId) {{
-                        var config = this.captchaConfigs.find(function(config) {{
-                            return config.elementId === elementId;
+                        // This works in MS Edge and google Chrome
+                        //var config = this.reCaptchaConfigs.find((c) => {{
+                        //    return c.elementId === elementId;
+                        //}});
+
+                        // This works in MS Edge and google Chrome and MS IE11
+                        var config;
+
+                        this.reCaptchaConfigs.forEach(function(c) {{
+                            if(c.elementId === elementId) {{
+                                config = c;
+                                return;
+                            }}
                         }});
 
                         return config ? config.widgetId : null;
                     }},
 
                     getReCaptchaContainerIdForElement: function(elementId) {{
-                         var config = this.captchaConfigs.find(function(config) {{
-                            return config.elementId === elementId;
+                        // This works in MS Edge and google Chrome
+                        //var config = this.reCaptchaConfigs.find((c) => {{
+                        //    return c.elementId === elementId;
+                        //}});
+
+                        // This works in MS Edge and google Chrome and MS IE11
+                        var config;
+
+                        this.reCaptchaConfigs.forEach(function(c) {{
+                            if(c.elementId === elementId) {{
+                                config = c;
+                                return;
+                            }}
                         }});
 
                         return config ? config.containerId : null;
+                    }},
+
+                    getReCaptchaConfigForElement: function(elementId) {{
+                        // This works in MS Edge and google Chrome
+                        //var config = this.reCaptchaConfigs.find((config) => {{
+                        //    return config.elementId === elementId;
+                        //}});
+
+                        // This works in MS Edge and google Chrome and MS IE11
+                        var config;
+
+                        this.reCaptchaConfigs.forEach(function(c) {{
+                            if(c.elementId === elementId) {{
+                                config = c;
+                                return;
+                            }}
+                        }});
+
+                        return config;
                     }},
 
                     executeReCaptchaForElement: function(elementId) {{
@@ -87,7 +131,7 @@ namespace brechtbaekelandt.reCaptcha.Extensions
                     }}
                 }}
                 
-                window.brechtbaekelandt.reCaptcha.captchaConfigs.push(
+                window.brechtbaekelandt.reCaptcha.reCaptchaConfigs.push(
                 {{
                     containerId: ""{containerId}"",
                     elementId: ""{elementId}"",
@@ -97,21 +141,37 @@ namespace brechtbaekelandt.reCaptcha.Extensions
                     useCookie: {useCookie.ToString().ToLower()},
                     isInitialized: false,                        
                     data: {{}},
+
+                    get before() {{
+                        return {(string.IsNullOrEmpty(beforeReCaptcha) ? "null" : beforeReCaptcha)};
+                    }},
                    
                     get initialize() {{
                         var self = this;
 
-                        return () => {{
+                        // This works in MS Edge and google Chrome
+                        //return () => {{
+
+                        // This works in MS Edge and google Chrome and MS IE11
+                        return function() {{
                             var element = document.getElementById(self.elementId);                                    
                             var elementClone = element.cloneNode(true);
-                            
-                            elementClone[""on"" + self.event] = self.eventHandler;
+                                                            
+                            elementClone[""on"" + (self.event != ""enter"" ? self.event : ""keyup"")] = self.eventHandler;
 
-                            // get the original value and selectedIndex (for <select>)                         
-                            elementClone.onfocus = () => {{
+                            // This works in MS Edge and google Chrome
+                            // Get the original value and selectedIndex (for <select>)                         
+                            //elementClone.onfocus = () => {{
+                            //    self.data.originalValue = elementClone.value;
+                            //    self.data.originalIndex = elementClone.selectedIndex;                                   
+                            //}}
+
+                            // This works in MS Edge and google Chrome and MS IE11
+                            // Get the original value and selectedIndex (for <select>)  
+                            elementClone.onfocus = function() {{
                                 self.data.originalValue = elementClone.value;
-                                self.data.originalIndex = elementClone.selectedIndex                                    
-                            }}
+                                self.data.originalIndex = elementClone.selectedIndex;
+                            }}                                
                             
                             element.id += ""_Original"";                               
                             element.style.display = ""none"";
@@ -122,33 +182,38 @@ namespace brechtbaekelandt.reCaptcha.Extensions
 
                             self.isInitialized = true;                                
                         }}
-                    }},
-
-                    get before() {{
-                        return {(string.IsNullOrEmpty(beforeCheck) ? "null" : "window." + beforeCheck)};
-                    }},
+                    }},                        
 
                     get eventHandler() {{
                         var self = this;
 
-                        return (ev) => {{
-                            self.eventObject =ev;
+                        // This works in MS Edge and google Chrome
+                        //return (ev) => {{
+
+                        // This works in MS Edge and google Chrome and MS IE11
+                        return function(ev) {{
+
+                            self.eventObject = ev;
+
+                            if(self.event === ""enter"") {{
+                                if(self.eventObject.keyCode !== 13) {{
+                                    return;
+                                }}
+                            }}
 
                             ev.preventDefault();
                             ev.stopImmediatePropagation();
 
-                            // clear the cookie on the document
+                            // Clear the cookie on the document
                             document.cookie = ""g-recaptcha-response=; expires=Thu, 01 Jan 1970 00:00:01 GMT; path=/"";
 
-                            // prevent the change to occur till after ReCaptcha check by setting the values to the original values and/or the selectedIndexes (<select>) to the original index                           
-                            self.data.newValue = ev.target.value;
-                            self.data.newIndex = ev.target.selectedIndex;
-                            ev.target.value = self.data.originalValue;                           
-                            ev.target.selectedIndex = self.data.originalIndex;
+                            self.data.newValue = ev.target.value;                                  
 
-                            if(ev.target.nodeType === ""SELECT"") {{    
-                                ev.target.options.forEach((option) => option.selected = false);
-
+                            if(ev.target.nodeName === ""SELECT"") {{   
+                                // Prevent the change to occur till after ReCaptcha check by setting the values to the original values the selectedIndexes to the original index                           
+                                self.data.newIndex = ev.target.selectedIndex;
+                                ev.target.value = self.data.originalValue;
+                                ev.target.selectedIndex = self.data.originalIndex;
                                 ev.target.options[ev.target.selectedIndex].selected = true;
                             }}
 
@@ -165,13 +230,17 @@ namespace brechtbaekelandt.reCaptcha.Extensions
                     get callback() {{
                         var self = this;
 
-                        return (response) => {{
+                        // This works in MS Edge and google Chrome
+                        //return (response) => {{
+
+                        // This works in MS Edge and google Chrome and MS IE11
+                        return function(response) {{
 
                             if(self.useCookie) {{
-                                // set cookie
+                                // Set cookie
                                 var date = new Date();
 
-                                // set the period in which the cookie will expire (30 seconds);
+                                // Set the period in which the cookie will expire (30 seconds);
                                 date.setTime(date.getTime() + 30000);
 
                                 document.cookie = ""g-recaptcha-response="" + response + ""; expires="" + date.toUTCString() + ""; path=/"";
@@ -180,29 +249,49 @@ namespace brechtbaekelandt.reCaptcha.Extensions
                             var element = document.getElementById(self.elementId + ""_Original"");
                             var clonedElement = document.getElementById(self.elementId);
 
-                            // set the id's to the original values so when triggering the even the event.target id is correct
+                            // Set the ids to the original values so when triggering the even the event.target id is correct
                             element.id = self.elementId;
                             clonedElement.id = self.elementId + ""_Cloned"";
-
-                            // set the value to the new value and/or the selectedIndex (<select>) to the new index
+                           
+                            // Set the value to the new value
                             clonedElement.value = self.data.newValue;
                             element.value = self.data.newValue;
-                            clonedElement.selectedIndex = self.data.newIndex;
-                            element.selectedIndex = self.data.newIndex;
-
-                            if(clonedElement.nodeType === ""SELECT"" && element.nodeType === ""SELECT"") {{
-                                element.options.forEach((option) => option.selected = false);
+                            
+                            if(clonedElement.nodeName === ""SELECT"" && element.nodeName === ""SELECT"") {{  
+                                // Set the selected index to the new index                                   
+                                clonedElement.selectedIndex = self.data.newIndex;
+                                element.selectedIndex = self.data.newIndex;
                                 element.options[element.selectedIndex].selected = true;
                             }}                                                               
 
                             switch (self.event) {{
                                 case ""click"": element.click(); break;
                                 case ""focus"": element.focus(); break;
-                                case ""blur"": element.blur(); break;
-                                default: element.dispatchEvent(self.eventObject);
+                                case ""blur"": element.blur(); break;  
+
+                                // This works in MS Edge and google Chrome
+                                //default: element.dispatchEvent(self.eventObject); break;
+        
+                                // This works in MS Edge and google Chrome and MS IE11
+                                default: {{                                        
+                                    var event;
+
+                                    if(typeof(Event) === ""function"") {{
+                                        event = self.eventObject;
+                                    }} else {{ 
+                                        event = document.createEvent(""Event"");
+                                        event.initEvent(self.event === ""enter"" ? ""keyup"" : self.event, true, true);
+                                        if(self.event === ""enter"") {{ 
+                                            event.keyCode = 13;
+                                            event.which = 13;
+                                        }}
+                                    }} 
+
+                                    element.dispatchEvent(event);   
+                                }}; break;
                             }}
 
-                            // reset the id's after the event trigger
+                            // Reset the ids after the event trigger
                             element.id = self.elementId + ""_Original"";
                             clonedElement.id = self.elementId;
 
@@ -214,21 +303,20 @@ namespace brechtbaekelandt.reCaptcha.Extensions
                 if (!window.brechtbaekelandt.reCaptcha.isReCaptchaApiScriptAlreadyInPage) {{
                     window.brechtbaekelandt.reCaptcha.isReCaptchaApiScriptAlreadyInPage = true;
 
-                    var captchaScript = document.createElement('script');
-                    captchaScript.type = 'text/javascript';
-                    captchaScript.async = true;
-                    captchaScript.defer = true;
-                    captchaScript.src = 'https://www.google.com/recaptcha/api.js?onload=reCaptchaApiLoaded&render=explicit';
+                    var reCaptchaScript = document.createElement('script');
+                    reCaptchaScript.type = 'text/javascript';
+                    reCaptchaScript.async = true;
+                    reCaptchaScript.defer = true;
+                    reCaptchaScript.src = 'https://www.google.com/recaptcha/api.js?onload=reCaptchaApiLoaded&render=explicit';
 
                     var head = document.getElementsByTagName('head')[0];
-                    head.appendChild(captchaScript)
+                    head.appendChild(reCaptchaScript)
 
                     function reCaptchaApiLoaded() {{
                         window.brechtbaekelandt.reCaptcha.isReCaptchaApiScriptLoaded = true; 
-                        window.brechtbaekelandt.reCaptcha.initializeCaptchas();
+                        window.brechtbaekelandt.reCaptcha.initializeReCaptchas();
                     }}
-                }};                
-                
+                }};                                
                 </script>";
 
             return script;
