@@ -160,17 +160,17 @@ namespace brechtbaekelandt.reCaptcha.Extensions
                             elementClone[""on"" + (self.event != ""enter"" ? self.event : ""keyup"")] = self.eventHandler;
 
                             // This works in MS Edge and google Chrome
-                            // get the original value and selectedIndex (for <select>)                         
+                            // Get the original value and selectedIndex (for <select>)                         
                             //elementClone.onfocus = () => {{
                             //    self.data.originalValue = elementClone.value;
-                            //    self.data.originalIndex = elementClone.selectedIndex                                    
+                            //    self.data.originalIndex = elementClone.selectedIndex;                                   
                             //}}
 
                             // This works in MS Edge and google Chrome and MS IE11
-                            // get the original value and selectedIndex (for <select>)  
+                            // Get the original value and selectedIndex (for <select>)  
                             elementClone.onfocus = function() {{
                                 self.data.originalValue = elementClone.value;
-                                self.data.originalIndex = elementClone.selectedIndex  
+                                self.data.originalIndex = elementClone.selectedIndex;
                             }}                                
                             
                             element.id += ""_Original"";                               
@@ -204,13 +204,13 @@ namespace brechtbaekelandt.reCaptcha.Extensions
                             ev.preventDefault();
                             ev.stopImmediatePropagation();
 
-                            // clear the cookie on the document
+                            // Clear the cookie on the document
                             document.cookie = ""g-recaptcha-response=; expires=Thu, 01 Jan 1970 00:00:01 GMT; path=/"";
 
                             self.data.newValue = ev.target.value;                                  
 
                             if(ev.target.nodeName === ""SELECT"") {{   
-                                // prevent the change to occur till after ReCaptcha check by setting the values to the original values the selectedIndexes to the original index                           
+                                // Prevent the change to occur till after ReCaptcha check by setting the values to the original values the selectedIndexes to the original index                           
                                 self.data.newIndex = ev.target.selectedIndex;
                                 ev.target.value = self.data.originalValue;
                                 ev.target.selectedIndex = self.data.originalIndex;
@@ -237,10 +237,10 @@ namespace brechtbaekelandt.reCaptcha.Extensions
                         return function(response) {{
 
                             if(self.useCookie) {{
-                                // set cookie
+                                // Set cookie
                                 var date = new Date();
 
-                                // set the period in which the cookie will expire (30 seconds);
+                                // Set the period in which the cookie will expire (30 seconds);
                                 date.setTime(date.getTime() + 30000);
 
                                 document.cookie = ""g-recaptcha-response="" + response + ""; expires="" + date.toUTCString() + ""; path=/"";
@@ -249,16 +249,16 @@ namespace brechtbaekelandt.reCaptcha.Extensions
                             var element = document.getElementById(self.elementId + ""_Original"");
                             var clonedElement = document.getElementById(self.elementId);
 
-                            // set the id's to the original values so when triggering the even the event.target id is correct
+                            // Set the ids to the original values so when triggering the even the event.target id is correct
                             element.id = self.elementId;
                             clonedElement.id = self.elementId + ""_Cloned"";
                            
-                            // set the value to the new value
+                            // Set the value to the new value
                             clonedElement.value = self.data.newValue;
                             element.value = self.data.newValue;
                             
                             if(clonedElement.nodeName === ""SELECT"" && element.nodeName === ""SELECT"") {{  
-                                // set the selected index to the new index                                   
+                                // Set the selected index to the new index                                   
                                 clonedElement.selectedIndex = self.data.newIndex;
                                 element.selectedIndex = self.data.newIndex;
                                 element.options[element.selectedIndex].selected = true;
@@ -270,7 +270,7 @@ namespace brechtbaekelandt.reCaptcha.Extensions
                                 case ""blur"": element.blur(); break;  
 
                                 // This works in MS Edge and google Chrome
-                                // default: element.dispatchEvent(self.eventObject); break;
+                                //default: element.dispatchEvent(self.eventObject); break;
         
                                 // This works in MS Edge and google Chrome and MS IE11
                                 default: {{                                        
@@ -291,7 +291,7 @@ namespace brechtbaekelandt.reCaptcha.Extensions
                                 }}; break;
                             }}
 
-                            // reset the id's after the event trigger
+                            // Reset the ids after the event trigger
                             element.id = self.elementId + ""_Original"";
                             clonedElement.id = self.elementId;
 
