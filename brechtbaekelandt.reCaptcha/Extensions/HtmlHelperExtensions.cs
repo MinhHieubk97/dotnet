@@ -20,7 +20,7 @@ namespace brechtbaekelandt.reCaptcha.Extensions
             return new HtmlString(BuildReCaptchaForElementHtml(publicKey, elementId, @event, beforeReCaptcha, useCookie));
         }
 
-        private static string BuildReCaptchaForElementHtml(string publicKey, string elementId, string @event, string beforeCheck, bool useCookie)
+        private static string BuildReCaptchaForElementHtml(string publicKey, string elementId, string @event, string beforeReCaptcha, bool useCookie)
         {
             var builder = new StringBuilder();
 
@@ -28,7 +28,7 @@ namespace brechtbaekelandt.reCaptcha.Extensions
 
             builder.Append(BuildReCaptchaContainerHtml(publicKey, containerId));
             builder.Append("");
-            builder.Append(BuildReCaptchaScript(elementId, containerId, @event, beforeCheck, useCookie));
+            builder.Append(BuildReCaptchaScript(elementId, containerId, @event, beforeReCaptcha, useCookie));
             builder.Append("");
 
             return builder.ToString();
@@ -39,7 +39,7 @@ namespace brechtbaekelandt.reCaptcha.Extensions
             return $"<div class=\"g-recaptcha\" id=\"{containerId}\" data-sitekey=\"{publicKey}\" data-size=\"invisible\"></div>";
         }
 
-        private static string BuildReCaptchaScript(string elementId, Guid containerId, string @event, string beforeCheck, bool useCookie)
+        private static string BuildReCaptchaScript(string elementId, Guid containerId, string @event, string beforeReCaptcha, bool useCookie)
         {
             var script =
                 $@"<script type=""text/javascript"">
@@ -143,7 +143,7 @@ namespace brechtbaekelandt.reCaptcha.Extensions
                     data: {{}},
 
                     get before() {{
-                        return {(string.IsNullOrEmpty(beforeCheck) ? "null" : beforeCheck)};
+                        return {(string.IsNullOrEmpty(beforeReCaptcha) ? "null" : beforeReCaptcha)};
                     }},
                    
                     get initialize() {{
