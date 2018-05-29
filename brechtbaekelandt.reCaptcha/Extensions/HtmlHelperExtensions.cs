@@ -55,7 +55,7 @@ namespace brechtbaekelandt.reCaptcha.Extensions
                         // This works in MS Edge and google Chrome
                         //this.captchaConfigs.forEach(config => {{ config.initialize() }})
 
-                        // This works in MS Edge and google Chrome and MS IE
+                        // This works in MS Edge and google Chrome and MS IE11
                         this.captchaConfigs.forEach(function(config) {{ config.initialize() }})
                        
                         this.isInitialized = true;
@@ -67,7 +67,7 @@ namespace brechtbaekelandt.reCaptcha.Extensions
                         //    return c.elementId === elementId;
                         //}});
 
-                        // This works in MS Edge and google Chrome and MS IE
+                        // This works in MS Edge and google Chrome and MS IE11
                         var config;
 
                         this.captchaConfigs.forEach(function(c) {{
@@ -86,7 +86,7 @@ namespace brechtbaekelandt.reCaptcha.Extensions
                         //    return c.elementId === elementId;
                         //}});
 
-                        // This works in MS Edge and google Chrome and MS IE
+                        // This works in MS Edge and google Chrome and MS IE11
                         var config;
 
                         this.captchaConfigs.forEach(function(c) {{
@@ -105,7 +105,7 @@ namespace brechtbaekelandt.reCaptcha.Extensions
                         //    return config.elementId === elementId;
                         //}});
 
-                        // This works in MS Edge and google Chrome and MS IE
+                        // This works in MS Edge and google Chrome and MS IE11
                         var config;
 
                         this.captchaConfigs.forEach(function(c) {{
@@ -152,7 +152,7 @@ namespace brechtbaekelandt.reCaptcha.Extensions
                         // This works in MS Edge and google Chrome
                         //return () => {{
 
-                        // This works in MS Edge and google Chrome and MS IE
+                        // This works in MS Edge and google Chrome and MS IE11
                         return function() {{
                             var element = document.getElementById(self.elementId);                                    
                             var elementClone = element.cloneNode(true);
@@ -166,7 +166,7 @@ namespace brechtbaekelandt.reCaptcha.Extensions
                             //    self.data.originalIndex = elementClone.selectedIndex                                    
                             //}}
 
-                            // This works in MS Edge and google Chrome and MS IE
+                            // This works in MS Edge and google Chrome and MS IE11
                             // get the original value and selectedIndex (for <select>)  
                             elementClone.onfocus = function() {{
                                 self.data.originalValue = elementClone.value;
@@ -190,7 +190,7 @@ namespace brechtbaekelandt.reCaptcha.Extensions
                         // This works in MS Edge and google Chrome
                         //return (ev) => {{
 
-                        // This works in MS Edge and google Chrome and MS IE
+                        // This works in MS Edge and google Chrome and MS IE11
                         return function(ev) {{
 
                             self.eventObject = ev;
@@ -233,7 +233,7 @@ namespace brechtbaekelandt.reCaptcha.Extensions
                         // This works in MS Edge and google Chrome
                         //return (response) => {{
 
-                        // This works in MS Edge and google Chrome and MS IE
+                        // This works in MS Edge and google Chrome and MS IE11
                         return function(response) {{
 
                             if(self.useCookie) {{
@@ -272,7 +272,7 @@ namespace brechtbaekelandt.reCaptcha.Extensions
                                 // This works in MS Edge and google Chrome
                                 // default: element.dispatchEvent(self.eventObject); break;
         
-                                // This works in MS Edge and google Chrome and MS IE
+                                // This works in MS Edge and google Chrome and MS IE11
                                 default: {{                                        
                                     var event;
 
