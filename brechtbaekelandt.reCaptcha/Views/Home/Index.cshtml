@@ -8,12 +8,13 @@
     var _siteKey = "6LfCq1gUAAAAAHcL4LCOFR2H-9i8O6issyWvN6IZ";
 }
 
-<h1>Invisible ReCaptcha</h1>
+<h1>Invisible reCaptcha</h1>
 
-<p>see the docs on <a href="https://developers.google.com/recaptcha/docs/invisible">Google developers</a></p>
+<p>See the reCaptcha docs on <a href="https://developers.google.com/recaptcha/docs/invisible">Google developers</a>.</p>
+<p>See the docs for this example on <a href="https://www.brechtbaekelandt.net/blog/post/ihtmlhelper-extension-for-google-invisible-recaptcha-in-aspnet-core-2-on-any-html-element">my blog</a>.</p>
 
 <hr />
-<h4>Regular form POST with validation before ReCaptcha on submit button element with g-recaptcha-response in form data</h4>
+<h4>Regular form POST with validation before reCaptcha on submit button element with g-recaptcha-response in form data</h4>
 <hr />
 
 <form asp-controller="Home" asp-action="Post" method="post" role="form" id="postForm">
@@ -68,7 +69,7 @@
 
 
 <hr />
-<h4>AJAX POST with validation before ReCaptcha on link element with g-recapcha-response in request header</h4>
+<h4>AJAX POST with validation before reCaptcha on link element with g-recapcha-response in request header</h4>
 <hr />
 
 <form id="ajaxForm">
@@ -166,7 +167,7 @@
 </script>
 
 <hr />
-<h4>AJAX POST with confirm before ReCaptcha on select element with g-recaptcha-response in cookie</h4>
+<h4>AJAX POST with confirm before reCaptcha on select element with g-recaptcha-response in cookie</h4>
 <hr />
 
 <form id="ajaxForm2">
@@ -179,7 +180,7 @@
         </select>
     </div>
     <div class="form-group">
-        <i>*note: the value will not change untill after the ReCaptcha is completed.</i>
+        <i>*note: the value will not change untill after the reCaptcha is completed.</i>
     </div>
 
     @this.Html.InvisibleReCaptchaFor(_siteKey, "addPersonAjaxSelect", "change", "() => confirm('Are you sure you want to change the person?')", true)
