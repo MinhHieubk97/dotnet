@@ -15,7 +15,7 @@ namespace brechtbaekelandt.reCaptcha.Extensions
     {
         public static HtmlString InvisibleReCaptchaFor(this IHtmlHelper htmlHelper, string publicKey, string elementId, string @event = "click", string beforeReCaptcha = null, bool useCookie = false)
         {
-            @event = @event ??  "click";
+            @event = @event ?? "click";
 
             return new HtmlString(BuildReCaptchaForElementHtml(publicKey, elementId, @event, beforeReCaptcha, useCookie));
         }
@@ -218,7 +218,7 @@ namespace brechtbaekelandt.reCaptcha.Extensions
                             }}
 
                             if(typeof self.before === ""function"") {{
-                                if(self.before(self.elementId)) {{
+                                if(self.before.call({GetContextFromFunction(beforeReCaptcha, elementId)}, self.elementId)) {{
                                     grecaptcha.execute(self.widgetId);
                                 }}
                             }} else {{
@@ -320,6 +320,22 @@ namespace brechtbaekelandt.reCaptcha.Extensions
                 </script>";
 
             return script;
+        }
+
+        private static string GetContextFromFunction(string function, string elementId)
+        {
+            // default context
+            var context = $@"document.getElementById(""{elementId}"")";
+
+            var isAnonymousFunction = function.StartsWith("function");
+            var isLambdaFunction = function.Contains("=>");
+
+            if (!isLambdaFunction && !isAnonymousFunction && function.LastIndexOf(".", StringComparison.Ordinal) > 1)
+            {
+                context = function.Substring(0, function.LastIndexOf(".", StringComparison.Ordinal));
+            }
+
+            return context;
         }
     }
 }
