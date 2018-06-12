@@ -324,6 +324,11 @@ namespace brechtbaekelandt.reCaptcha.Extensions
 
         private static string GetContextFromFunction(string function, string elementId)
         {
+            if (string.IsNullOrEmpty(function))
+            {
+                return "null";
+            }
+
             // default context
             var context = $@"document.getElementById(""{elementId}"")";
 
