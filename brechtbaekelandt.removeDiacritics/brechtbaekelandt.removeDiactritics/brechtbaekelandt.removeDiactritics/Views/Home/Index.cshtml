@@ -1,0 +1,26 @@
+﻿<h3>
+    Remove diacritics with linq to entity and SQL db functions
+</h3>
+
+<p>
+    Here's a small example on how to search by keywords without having to type the accents (diacritics).
+</p>
+
+<input type="text" placeholder="filter by keywords (contains)" data-selector="filter-input" data-bind="textInput: filter" />
+
+<p>
+    <!-- ko foreach: words -->
+    <span data-bind="text: string"></span>
+    <br />
+    <!-- /ko -->
+</p>
+
+@section scripts{
+    <script src="~/js/viewmodels/home.js"></script>
+
+    <script type="text/javascript">
+        $(function () {
+            brechtbaekelandt.removeDiacritics.init();
+        });
+    </script>
+}
