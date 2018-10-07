@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using brechtbaekelandt.removeDiactritics.Data.Entities;
+﻿using brechtbaekelandt.removeDiactritics.Data.Entities;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Design.Internal;
+using System;
 
 namespace brechtbaekelandt.removeDiactritics.Data.DbContext
 {

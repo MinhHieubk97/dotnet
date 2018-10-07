@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
-using brechtbaekelandt.removeDiactritics.Data.DbContext;
+﻿using brechtbaekelandt.removeDiactritics.Data.DbContext;
 using brechtbaekelandt.removeDiactritics.Data.Entities;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.ObjectModel;
+using System.Linq;
 
 
 namespace brechtbaekelandt.removeDiactritics.Controllers.Api
@@ -21,7 +17,7 @@ namespace brechtbaekelandt.removeDiactritics.Controllers.Api
         {
             this._context = context;
         }
-        
+
         [HttpGet]
         public ActionResult<Collection<Word>> Get([FromQuery]string filter = null)
         {
@@ -35,7 +31,7 @@ namespace brechtbaekelandt.removeDiactritics.Controllers.Api
             {
                 query = this._context.Words.Where(w => DataDbContext.RemoveDiacritics(w.String).Contains(DataDbContext.RemoveDiacritics(filter))).OrderBy(w => w.String);
             }
-            
+
             return new Collection<Word>(query.ToArray());
         }
     }
