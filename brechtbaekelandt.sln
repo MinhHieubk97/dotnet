@@ -5,7 +5,9 @@ VisualStudioVersion = 15.0.27130.2024
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "brechtbaekelandt.ldap", "brechtbaekelandt.ldap\brechtbaekelandt.ldap.csproj", "{48A17624-DE75-4826-A7C1-BA04142AF19C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "brechtbaekelandt.reCaptcha", "brechtbaekelandt.reCaptcha\brechtbaekelandt.reCaptcha.csproj", "{BCAFC10E-0F18-481B-8BF9-1416395B50BF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "brechtbaekelandt.reCaptcha", "brechtbaekelandt.reCaptcha\brechtbaekelandt.reCaptcha.csproj", "{BCAFC10E-0F18-481B-8BF9-1416395B50BF}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "brechtbaekelandt.removeDiactritics", "brechtbaekelandt.removeDiacritics\brechtbaekelandt.removeDiactritics.csproj", "{1BECB7A1-66FC-44BB-A67A-86C5FBA985B0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{BCAFC10E-0F18-481B-8BF9-1416395B50BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BCAFC10E-0F18-481B-8BF9-1416395B50BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BCAFC10E-0F18-481B-8BF9-1416395B50BF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1BECB7A1-66FC-44BB-A67A-86C5FBA985B0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1BECB7A1-66FC-44BB-A67A-86C5FBA985B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1BECB7A1-66FC-44BB-A67A-86C5FBA985B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1BECB7A1-66FC-44BB-A67A-86C5FBA985B0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
