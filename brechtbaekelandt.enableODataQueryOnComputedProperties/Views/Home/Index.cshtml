@@ -1,0 +1,201 @@
+﻿@{
+    this.ViewBag.Title = "Home";
+}
+
+<h4>Persons /odata/Persons</h4>
+
+<table>
+    <thead>
+        <tr>
+            <th>
+                First name
+            </th>
+            <th>
+                Last name
+            </th>
+            <th>
+                Name
+            </th>
+            <th>
+                Birthday
+            </th>
+            <th>
+                Age
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <!-- ko foreach: persons -->
+        <tr>
+            <td>
+                <span data-bind="text: Firstname"></span>
+            </td>
+            <td>
+                <span data-bind="text: Lastname"></span>
+            </td>
+            <td>
+                <span data-bind="text: Name"></span>
+            </td>
+            <td>
+                <span data-bind="text: Birthday"></span>
+            </td>
+            <td>
+                <span data-bind="text: Age"></span>
+            </td>
+        </tr>
+        <!-- /ko -->
+    </tbody>
+</table>
+
+<p>Data returned by the odata controller:</p>
+
+<p data-bind="text: personsJsonString"></p>
+
+<hr />
+
+<h4>Persons /odata/Persons?$select=Firstname,Name</h4>
+
+<p>
+    We can select "Name" (which is a computed property), but we need to specify also the "Firstname" because "Name" is dependent on "Firstname". Because we only select "Firstname", the "Name" property will not show the "Lastname".
+</p>
+<p>
+    To demonstrate the method "EnableODataQueryOnComputedProperties", just remove line 36 from "Controllers\Api\PersonsController.cs" and it will throw an exception: "The specified type member 'Name' is not supported in LINQ to Entities. Only initializers, entity members, and entity navigation properties are supported." (see console)
+</p>
+
+<table>
+    <thead>
+        <tr>
+            <th>
+                First name
+            </th>
+            <th>
+                Name
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <!-- ko foreach: simplePersons -->
+        <tr>
+            <td>
+                <span data-bind="text: Firstname"></span>
+            </td>
+            <td>
+                <span data-bind="text: Name"></span>
+            </td>
+        </tr>
+        <!-- /ko -->
+    </tbody>
+</table>
+
+<p>Data returned by the odata controller:</p>
+
+<p data-bind="text: simplePersonsJsonString"></p>
+
+<hr />
+
+<h4>Persons /odata/Persons?$orderBy=Name desc</h4>
+
+<p>
+   We can order by descending on "Name"
+</p>
+<p>
+    To demonstrate the method "EnableODataQueryOnComputedProperties", just remove line 36 from "Controllers\Api\PersonsController.cs" and it will throw an exception: "The specified type member 'Name' is not supported in LINQ to Entities. Only initializers, entity members, and entity navigation properties are supported." (see console)
+</p>
+
+<table>
+    <thead>
+    <tr>
+        <th>
+            First name
+        </th>
+        <th>
+            Last name
+        </th>
+        <th>
+            Name
+        </th>
+        <th>
+            Birthday
+        </th>
+        <th>
+            Age
+        </th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- ko foreach: orderedByNamePersons -->
+    <tr>
+        <td>
+            <span data-bind="text: Firstname"></span>
+        </td>
+        <td>
+            <span data-bind="text: Lastname"></span>
+        </td>
+        <td>
+            <span data-bind="text: Name"></span>
+        </td>
+        <td>
+            <span data-bind="text: Birthday"></span>
+        </td>
+        <td>
+            <span data-bind="text: Age"></span>
+        </td>
+    </tr>
+    <!-- /ko -->
+    </tbody>
+</table>
+
+<p>Data returned by the odata controller:</p>
+
+<p data-bind="text: orderedByNamePersonsJsonString"></p>
+
+
+<hr />
+
+<h4>Persons /odata/Persons?$select=Lastname,Birthday,Age&amp;$orderBy=Age</h4>
+
+<p>
+    We can select "Lastname" and "Birthday" to be able to order by on "Age"
+</p>
+<p>
+    To demonstrate the method "EnableODataQueryOnComputedProperties", just remove line 36 from "Controllers\Api\PersonsController.cs" and it will throw an exception: "The specified type member 'Name' is not supported in LINQ to Entities. Only initializers, entity members, and entity navigation properties are supported." (see console)
+</p>
+
+<table>
+    <thead>
+    <tr>
+        <th>
+            Last name
+        </th>
+        <th>
+            Age
+        </th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- ko foreach: orderedByAgePersons -->
+    <tr>
+        <td>
+            <span data-bind="text: Lastname"></span>
+        </td>
+        <td>
+            <span data-bind="text: Age"></span>
+        </td>
+    </tr>
+    <!-- /ko -->
+    </tbody>
+</table>
+
+<p>Data returned by the odata controller:</p>
+
+<p data-bind="text: orderedByAgePersonsJsonString"></p>
+
+@section scripts{
+    <script src="~/Scripts/viewmodels/home.js"></script>
+
+    <script type="text/javascript">
+        $(function () {
+            brechtbaekelandt.enableODataQueryOnComputedProperties.init();
+        });
+    </script>
+}

@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "brechtbaekelandt.reCaptcha"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "brechtbaekelandt.removeDiactritics", "brechtbaekelandt.removeDiacritics\brechtbaekelandt.removeDiactritics.csproj", "{1BECB7A1-66FC-44BB-A67A-86C5FBA985B0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "brechtbaekelandt.enableODataQueryOnComputedProperties", "brechtbaekelandt.enableODataQueryOnComputedProperties\brechtbaekelandt.enableODataQueryOnComputedProperties.csproj", "{72D11513-CAEB-4556-9539-526F4CAC36C8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{1BECB7A1-66FC-44BB-A67A-86C5FBA985B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1BECB7A1-66FC-44BB-A67A-86C5FBA985B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1BECB7A1-66FC-44BB-A67A-86C5FBA985B0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{72D11513-CAEB-4556-9539-526F4CAC36C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{72D11513-CAEB-4556-9539-526F4CAC36C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{72D11513-CAEB-4556-9539-526F4CAC36C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{72D11513-CAEB-4556-9539-526F4CAC36C8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
