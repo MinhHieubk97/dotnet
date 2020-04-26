@@ -22,16 +22,49 @@ namespace brechtbaekelandt.entityFrameworkCoreClassLibrary.Data.Contexts
 
         }
 
+        public Country GetCountry(int id, bool includeStates = false)
+        {
+            return includeStates ? this.Countries.Include(c => c.States).FirstOrDefault(c => c.Id == id) : this.Countries.FirstOrDefault(c => c.Id == id);
+        }
+
+        public Task<Country> GetCountryAsync(int id, bool includeStates = false)
+        {
+            return includeStates ? this.Countries.Include(c => c.States).FirstOrDefaultAsync(c => c.Id == id) : this.Countries.FirstOrDefaultAsync(c => c.Id == id);
+        }
+
+        public Country GetCountry(string isoCode, bool includeStates = false)
+        {
+            return includeStates ? this.Countries.Include(c => c.States).FirstOrDefault(c => c.IsoCode == isoCode) : this.Countries.FirstOrDefault(c => c.IsoCode == isoCode);
+        }
+
+        public Task<Country> GetCountryAsync(string isoCode, bool includeStates = false)
+        {
+            return includeStates ? this.Countries.Include(c => c.States).FirstOrDefaultAsync(c => c.IsoCode == isoCode) : this.Countries.FirstOrDefaultAsync(c => c.IsoCode == isoCode);
+        }
+
         public IEnumerable<Country> GetCountries(bool includeStates = false)
         {
             return includeStates ? this.Countries.Include(c => c.States) : this.Countries.AsEnumerable();
         }
 
-        public async Task<IAsyncEnumerable<Country>> GetCountriesAsync(bool includeStates = false)
+        public State GetState(int id, bool includeCountry = false)
         {
-            return includeStates
-                ? this.Countries.Include(c => c.States).AsAsyncEnumerable()
-                : this.Countries.AsAsyncEnumerable();
+            return includeCountry ? this.States.Include(s => s.Country).FirstOrDefault(s => s.Id == id) : this.States.FirstOrDefault(s => s.Id == id);
+        }
+
+        public Task<State> GetStateAsync(int id, bool includeCountry = false)
+        {
+            return includeCountry ? this.States.Include(s => s.Country).FirstOrDefaultAsync(s => s.Id == id) : this.States.FirstOrDefaultAsync(s => s.Id == id);
+        }
+
+        public State GetState(string code, bool includeCountry = false)
+        {
+            return includeCountry ? this.States.Include(s => s.Country).FirstOrDefault(s => s.Code == code) : this.States.FirstOrDefault(s => s.Code == code);
+        }
+
+        public Task<State> GetStateAsync(string code, bool includeCountry = false)
+        {
+            return includeCountry ? this.States.Include(s => s.Country).FirstOrDefaultAsync(s => s.Code == code) : this.States.FirstOrDefaultAsync(s => s.Code == code);
         }
 
         public IEnumerable<State> GetStates(bool includeCountries = false)
@@ -39,41 +72,14 @@ namespace brechtbaekelandt.entityFrameworkCoreClassLibrary.Data.Contexts
             return includeCountries ? this.States.Include(s => s.Country).AsEnumerable() : this.States.AsEnumerable();
         }
 
-        public async Task<IAsyncEnumerable<State>> GetStatesAsync(bool includeCountries = false)
-        {
-            return includeCountries
-                ? this.States.Include(s => s.Country).AsAsyncEnumerable()
-                : this.States.AsAsyncEnumerable();
-        }
-
         public IEnumerable<State> GetStatesForCountry(int countryId, bool includeCountries = false)
         {
-            return includeCountries
-                ? this.States.Include(s => s.Country).Where(s => s.CountryId == countryId).AsEnumerable()
-                : this.States.Where(s => s.CountryId == countryId).AsEnumerable();
-        }
-
-        public async Task<IAsyncEnumerable<State>> GetStatesForCountryAsync(int countryId,
-            bool includeCountries = false)
-        {
-            return includeCountries
-                ? this.States.Include(s => s.Country).Where(s => s.CountryId == countryId).AsAsyncEnumerable()
-                : this.States.Where(s => s.CountryId == countryId).AsAsyncEnumerable();
+            return includeCountries ? this.States.Include(s => s.Country).Where(s => s.CountryId == countryId).AsEnumerable() : this.States.Where(s => s.CountryId == countryId).AsEnumerable();
         }
 
         public IEnumerable<State> GetStatesForCountry(string countryCode, bool includeCountries = false)
         {
-            return includeCountries
-                ? this.States.Include(s => s.Country).Where(s => s.Code == countryCode).AsEnumerable()
-                : this.States.Where(s => s.Code == countryCode).AsEnumerable();
-        }
-
-        public async Task<IAsyncEnumerable<State>> GetStatesForCountryAsync(string countryCode,
-            bool includeCountries = false)
-        {
-            return includeCountries
-                ? this.States.Include(s => s.Country).Where(s => s.Code == countryCode).AsAsyncEnumerable()
-                : this.States.Where(s => s.Code == countryCode).AsAsyncEnumerable();
+            return includeCountries ? this.States.Include(s => s.Country).Where(s => s.Code == countryCode).AsEnumerable() : this.States.Where(s => s.Code == countryCode).AsEnumerable();
         }
 
         protected override void OnModelCreating(ModelBuilder builder)
@@ -4277,4 +4283,3 @@ namespace brechtbaekelandt.entityFrameworkCoreClassLibrary.Data.Contexts
         }
     }
 }
-
